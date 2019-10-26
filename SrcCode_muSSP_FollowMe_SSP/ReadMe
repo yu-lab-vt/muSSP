@@ -1,0 +1,23 @@
+The packages are tested on Ubunut 16.04, the code is compiled by g++ with c++11 support.
+
+To run the codes with provided sample graph:
+(1) cd to the file location (e.g. 'you path to/SrcCode/muSSP/')
+(2) open terminal under current location
+(3) run the command in terminal: './muSSP -i ../input_MOT_seq07_followme.txt'
+
+The same way can be used to run dSSP algorithm in FollowMe[1] and SSP (successive shortest path)
+
+For the sample data:
+The sample graph format follows DIMACS CNF format, but does not list arc capacity constraint, which is always [0,1].
+
+To rebuild for you own graph, 
+(1) add the basic information like number of nodes and arcs to the file head
+(2) set the src node, sink node. In our tests, we use 1 and n.
+(3) add arcs indicating the enter/exit and transition cost of a detection
+(4) add other arcs indicating the cost of linking two objects into one trajectory
+
+
+
+[1] Philip Lenz, Andreas Geiger, and Raquel Urtasun. Followme: Efficient online min-cost flowtracking with bounded memory and computation.  InProceedings of the IEEE InternationalConference on Computer Vision, pages 4364–4372, 2015.
+
+
