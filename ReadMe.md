@@ -35,7 +35,7 @@ Dynamically maintain a shortest path tree of the residual graph while avoid comp
 2. Reduce the update frequency of the shortest path tree
 3. Accelerate the updating of the shortest path tree
 
-Four strategies (the four modules with different colors in the following flowchart) were proposed in muSSP to fulfill these three tasks. None of the strategies will violate the optimality of the final solution. Details of the strategies and proofs can be found in our [paper](http://papers.nips.cc/paper/8334-mussp-efficient-min-cost-flow-algorithm-for-multi-object-tracking).
+Four strategies (the four modules with different colors in the following flowchart) were proposed in muSSP to fulfill these three tasks. None of the strategies violate the optimality of the final solution. Details of the strategies and their proofs can be found in our [paper](http://papers.nips.cc/paper/8334-mussp-efficient-min-cost-flow-algorithm-for-multi-object-tracking).
 <p align="center">
   <img height="400" src="img/flowchart.png">
 </p>
@@ -63,7 +63,7 @@ cs2[1] is a famous push-relabel based MCF solver used in [3] and [4], where bina
 (2). open terminal under current location
 (3). run the command in terminal: './muSSP -i ../input_MOT_seq07_followme.txt'
 ```
-The same way can be used to run dSSP algorithm in FollowMe and SSP (successive shortest path) algorithm
+The same way can be used to run dSSP algorithm in FollowMe and SSP algorithm
 
 ### To rebuild for you own graph
 ```
@@ -95,8 +95,7 @@ If you find the code useful for your research, please cite our paper.
 [3] L. Zhang, Y. Li, and R. Nevatia, “Global data association for multiobject tracking using network flows,” in 2008 IEEE Conference on Computer Vision and Pattern Recognition. IEEE, 2008, pp. 1–8. 
 
 [4] H. Pirsiavash, D. Ramanan, and C. C. Fowlkes, “Globally-optimal
-greedy algorithms for tracking a variable number of objects,” in
-CVPR 2011. IEEE, 2011, pp. 1201–1208.
+greedy algorithms for tracking a variable number of objects,” in 2008 IEEE Conference on Computer Vision and Pattern Recognition. IEEE, 2011, pp. 1201–1208.
 
 [5] J. Berclaz, F. Fleuret, E. Turetken, and P. Fua, “Multiple object
 tracking using k-shortest paths optimization,” IEEE transactions
