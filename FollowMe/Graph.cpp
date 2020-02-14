@@ -28,7 +28,6 @@ Graph::Graph(int num_nodes, int num_edges, int src_id, int sink_id, double en_we
     parent_node_id.assign(num_nodes, 0);
     ancestor_node_id.assign(num_nodes, 0);
     distance2src.assign(num_nodes, FINF);
-    sink_info = new Sink(num_nodes, ex_weight);
 
     node_visited.assign(num_nodes, false);
     // this is used after building sst, so most nodes are visited already
@@ -46,10 +45,7 @@ Graph::Graph(int num_nodes, int num_edges, int src_id, int sink_id, double en_we
     ancestor_ssd.assign(num_nodes, FINF);
     ancestors_descendants.resize(num_nodes);
 
-    time_test = new long double[100];
-    for (int i = 0; i < 100; i++)
-        time_test[i] = 0;
-
+    time_test.resize(100, 0);
 }
 
 Node &Graph::get_node(int node_id) {
@@ -86,7 +82,7 @@ void Graph::add_edge(int tail_id, int head_id, int edge_id, double weight) {
 
 // A recursive function used by shortestPath. See below link for details
 // https://www.geeksforgeeks.org/topological-sorting/
-void Graph::topologicalSortUtil(int v, bool visited[], std::stack<int> &Stack) {
+void Graph::topologicalSortUtil(int v, std::vector<bool>& visited, std::stack<int> &Stack) {
     // Mark the current node as visited
     visited[v] = true;
 
@@ -114,10 +110,7 @@ void Graph::shortest_path_dag()
 {
     std::stack<int> Stack;
     // Mark all the vertices as not visited
-    bool *visited = new bool[num_nodes_];
-    memset(&visited[0], false, num_nodes_ * sizeof(bool));
-    //for (int i = 0; i < num_nodes_; i++)
-    //    visited[i] = false;
+    std::vector<bool> visited(num_nodes_, false);
 
     // Call the recursive helper function to store Topological Sort
     // starting from all vertices one by one
@@ -256,9 +249,8 @@ void Graph::flip_path() { // erase the best one link to sink
  * if we use all nodes in the subgraph
  *
  * **************************************/
-void Graph::find_node_set4update(std::vector<int> &update_node_id) {
-//    bool *visited = new bool[num_nodes_];
-//    memset(&visited[0], false, num_nodes_ * sizeof(bool));
+void Graph::find_node_set4update(std::vector<int> &update_node_id)
+{
     for (int i = shortest_path.size() - 2; i >= 0; i--) {
         update_node_id.push_back(shortest_path[i]);
         distance2src[shortest_path[i]] = FINF;

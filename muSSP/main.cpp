@@ -22,7 +22,7 @@ inline size_t node_key(int i, int j)
 /// \param filename
 /// \return
 ///
-Graph init(std::string filename)
+Graph* init(std::string filename)
 {
     char pr_type[3]; ////problem type;
 
@@ -74,7 +74,7 @@ Graph init(std::string filename)
         }
     }
     std::cout <<"Parsing done!"<< std::endl;
-    return *resG;
+    return resG;
 }
 
 ///
@@ -84,23 +84,23 @@ Graph init(std::string filename)
 /// \param path_set
 /// \param outfile_name
 ///
-void print_solution(Graph resG, std::vector<std::vector<int>> path_set, const char *outfile_name)
+void print_solution(Graph* resG, std::vector<std::vector<int>> path_set, const char *outfile_name)
 {
-    std::vector<bool> edge_visited_flag(resG.num_edges_);
+    std::vector<bool> edge_visited_flag(resG->num_edges_);
     for (size_t i = 0; i < path_set.size(); i++) {
         for (size_t j = 0; j < path_set[i].size() - 1; j++) {
             int tail = path_set[i][j];
             int head = path_set[i][j + 1];
-            int edge_idx = resG.node_id2edge_id[node_key(tail, head)];
+            int edge_idx = resG->node_id2edge_id[node_key(tail, head)];
             edge_visited_flag[edge_idx] = !edge_visited_flag[edge_idx];
         }
     }
     FILE *fp = fopen(outfile_name, "w");
-    for (int i = 0; i < resG.num_edges_; i++) {
+    for (int i = 0; i < resG->num_edges_; i++) {
         if (edge_visited_flag[i])
-            fprintf(fp, "f %d %d 1\n", resG.edge_tail_head[i].first + 1, resG.edge_tail_head[i].second + 1);
+            fprintf(fp, "f %d %d 1\n", resG->edge_tail_head[i].first + 1, resG->edge_tail_head[i].second + 1);
         else
-            fprintf(fp, "f %d %d 0\n", resG.edge_tail_head[i].first + 1, resG.edge_tail_head[i].second + 1);
+            fprintf(fp, "f %d %d 0\n", resG->edge_tail_head[i].first + 1, resG->edge_tail_head[i].second + 1);
     }
     fclose(fp);
 }
@@ -122,18 +122,17 @@ int main(int argc, char *argv[])
     //Graph org_graph = init(
     //        "input_MOT_seq07_followme_k2.txt");
     char* in_file =  argv[2];
-    Graph org_graph = init(in_file);
+    std::unique_ptr<Graph> org_graph = std::unique_ptr<Graph>(init(in_file));
     t_end = clock();
     long double parsing_time = t_end - t_start;
 
-    auto *duration = new long double[10];
-    for (int i = 0; i < 10; i++)
-        duration[i] = 0;
+    std::array<long double, 10> duration;
+    duration.fill(0);
     //// 1: remove dummy edges
     t_start = clock();
-    org_graph.invalid_edge_rm();
+    org_graph->invalid_edge_rm();
     t_end = clock();
-    duration[0] = t_end - t_start;
+    duration[0] += t_end - t_start;
 
     ////save path and path cost
     std::vector<double> path_cost;
@@ -141,26 +140,26 @@ int main(int argc, char *argv[])
     int path_num = 0;
     t_start = clock();
     //// 2: initialize shortest path tree from the DAG
-    org_graph.shortest_path_dag();
+    org_graph->shortest_path_dag();
     t_end = clock();
-    duration[1] = duration[1] + t_end - t_start;
+    duration[1] += t_end - t_start;
 
-    path_cost.push_back(org_graph.distance2src[org_graph.sink_id_]);
-    org_graph.cur_path_max_cost = -org_graph.distance2src[org_graph.sink_id_]; // the largest cost we can accept
+    path_cost.push_back(org_graph->distance2src[org_graph->sink_id_]);
+    org_graph->cur_path_max_cost = -org_graph->distance2src[org_graph->sink_id_]; // the largest cost we can accept
 
     //// 3: convert edge cost (make all weights positive)
     t_start = clock();
-    org_graph.update_allgraph_weights();
+    org_graph->update_allgraph_weights();
     t_end = clock();
-    duration[2] = duration[2] + t_end - t_start;
+    duration[2] += t_end - t_start;
 
     //// 8: extract shortest path
     t_start = clock();
-    org_graph.extract_shortest_path();
+    org_graph->extract_shortest_path();
     t_end = clock();
-    duration[7] = duration[7] + t_end - t_start;
+    duration[7] += t_end - t_start;
 
-    path_set.push_back(org_graph.shortest_path);
+    path_set.push_back(org_graph->shortest_path);
     path_num++;
 
     std::vector<unsigned long> update_node_num;
@@ -168,65 +167,65 @@ int main(int argc, char *argv[])
     //// 4: find nodes for updating based on branch node
     std::vector<int> node_id4updating;
     t_start = clock();
-    org_graph.find_node_set4update(node_id4updating);
+    org_graph->find_node_set4update(node_id4updating);
     t_end = clock();
-    duration[3] = duration[3] + t_end - t_start;
+    duration[3] += t_end - t_start;
 
     //// 10: rebuild residual graph by flipping paths
     t_start = clock();
-    org_graph.flip_path();//also erase the top sinker
+    org_graph->flip_path();//also erase the top sinker
     t_end = clock();
-    duration[9] = duration[9] + t_end - t_start;
+    duration[9] += t_end - t_start;
     while (true) {
         //// 6: update shortest path tree based on the selected sub-graph
         t_start = clock();
-        org_graph.update_shortest_path_tree_recursive(node_id4updating);
-        printf("Iteration #%d, updated node number  %ld \n", path_num, org_graph.upt_node_num);
+        org_graph->update_shortest_path_tree_recursive(node_id4updating);
+        printf("Iteration #%d, updated node number  %ld \n", path_num, org_graph->upt_node_num);
         t_end = clock();
-        duration[5] = duration[5] + t_end - t_start;
+        duration[5] += t_end - t_start;
 
         //// 7: update sink node (heap)
         t_start = clock();
-        org_graph.update_sink_info(node_id4updating);
+        org_graph->update_sink_info(node_id4updating);
         t_end = clock();
-        duration[6] = duration[6] + t_end - t_start;
+        duration[6] += t_end - t_start;
 
         update_node_num.push_back(node_id4updating.size());
 
         //// 8: extract shortest path
         t_start = clock();
-        org_graph.extract_shortest_path();
+        org_graph->extract_shortest_path();
         t_end = clock();
-        duration[7] = duration[7] + t_end - t_start;
+        duration[7] += t_end - t_start;
 
         // test if stop
-        double cur_path_cost = path_cost[path_num - 1] + org_graph.distance2src[org_graph.sink_id_];
+        double cur_path_cost = path_cost[path_num - 1] + org_graph->distance2src[org_graph->sink_id_];
 
         if (cur_path_cost > -0.0000001) {
             break;
         }
 
         path_cost.push_back(cur_path_cost);
-        org_graph.cur_path_max_cost = -cur_path_cost;
-        path_set.push_back(org_graph.shortest_path);
+        org_graph->cur_path_max_cost = -cur_path_cost;
+        path_set.push_back(org_graph->shortest_path);
         path_num++;
 
         //// 9: update weights
         t_start = clock();
-        org_graph.update_subgraph_weights(node_id4updating);
+        org_graph->update_subgraph_weights(node_id4updating);
         t_end = clock();
-        duration[8] = duration[8] + t_end - t_start;
+        duration[8] += t_end - t_start;
 
         //// 4: find nodes for updating
         t_start = clock();
-        org_graph.find_node_set4update(node_id4updating);
+        org_graph->find_node_set4update(node_id4updating);
         t_end = clock();
-        duration[3] = duration[3] + t_end - t_start;
+        duration[3] += t_end - t_start;
         //// 10: rebuild the graph
         t_start = clock();
-        org_graph.flip_path();
+        org_graph->flip_path();
         t_end = clock();
-        duration[9] = duration[9] + t_end - t_start;
+        duration[9] += t_end - t_start;
     }
 
     //// out put results and time consuming
@@ -249,9 +248,9 @@ int main(int argc, char *argv[])
         for (auto &&tmpPath:path_set) {
             double tmp_path_cost = 0;
             for (size_t j = 0; j < tmpPath.size() - 1; j++) {
-                int tmp_edge_id = org_graph.node_id2edge_id[node_key(tmpPath[j + 1], tmpPath[j])];
-                tmp_path_cost += org_graph.edge_org_weights[tmp_edge_id];
-                org_graph.edge_org_weights[tmp_edge_id] *= -1;
+                int tmp_edge_id = org_graph->node_id2edge_id[node_key(tmpPath[j + 1], tmpPath[j])];
+                tmp_path_cost += org_graph->edge_org_weights[tmp_edge_id];
+                org_graph->edge_org_weights[tmp_edge_id] *= -1;
             }
             cost_sum_recalculate += tmp_path_cost;
         }
@@ -279,7 +278,7 @@ int main(int argc, char *argv[])
 
     /*********write detailed flow to txt********/
     if (argc > 3) {
-        print_solution(org_graph, path_set, "output.txt");//"output_edge_rm.txt"
+        print_solution(org_graph.get(), path_set, "output.txt");//"output_edge_rm.txt"
     }
     return 0;
 }

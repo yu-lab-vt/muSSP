@@ -11,6 +11,7 @@
 #include <algorithm>    // std::find
 #include <cstring>
 #include <fstream>
+#include <memory>
 //#include <list>
 
 #define INF INT_MAX
@@ -28,14 +29,14 @@ public:
         int src_id_, sink_id_;
         double en_weight_, ex_weight_;
 
-        long double *time_test;
+        std::vector<long double> time_test;
 
         std::vector<Node> V_; // save all nodes in the graph (precursor/successor/edge idx)
         std::vector<double> edge_weights;
         inline size_t node_key(int i,int j) {return (size_t) i << 32 | (unsigned int) j;}
         std::unordered_map<size_t, int> node_id2edge_id;
         std::vector<int> shortest_path;
-        Sink *sink_info;
+        std::unique_ptr<Sink> sink_info;
         double precursor_queue_top_val;
         // for data validation
         std::vector<std::pair<int, int>> edge_tail_head;
@@ -69,7 +70,7 @@ public:
         void invalid_edge_rm();
         void shortest_path_dag();
         // A function used by shortest_path_dag
-        void topologicalSortUtil(int v, bool visited[], std::stack<int> &Stack);
+        void topologicalSortUtil(int v, std::vector<bool>& visited, std::stack<int> &Stack);
 
         void extract_shortest_path();
         // flip shortest path

@@ -5,6 +5,7 @@
 #include <ctime>
 #include <numeric>
 #include <algorithm>
+#include <memory>
 
 ///
 /// \brief node_key
@@ -22,7 +23,7 @@ inline size_t node_key(int i,int j)
 /// \param filename
 /// \return
 ///
-Graph init(std::string filename)
+Graph* init(std::string filename)
 {
     int n = 0, m = 0; //no of nodes, no of arcs;
     char pr_type[3]; //problem type;
@@ -74,7 +75,7 @@ Graph init(std::string filename)
         }
     }
 
-    return *resG;
+    return resG;
 }
 
 ///
@@ -89,38 +90,37 @@ int main(int argc, char* argv[])
     clock_t t_end;
     t_start = clock();
     char* in_file =  argv[2];
-    Graph org_graph = init(in_file);
+    std::unique_ptr<Graph> org_graph = std::unique_ptr<Graph>(init(in_file));
     t_end = clock();
     long double parsing_time = t_end - t_start;
     // //100002, 199988, 399970, 599926, 799868, 999806
-    auto *duration = new long double [10];
-    for (int i=0; i<10; i++)
-        duration[i] = 0;
+    std::array<long double, 10> duration;
+    duration.fill(0);
     //    t_start = clock();
     std::vector<double> path_cost;
     std::vector<std::vector<int>> path_set;
     int path_num = 0;
     t_start = clock();
     //     1st step: initialize shortest path tree from the DAG
-    org_graph.shortest_path_dag();
+    org_graph->shortest_path_dag();
     t_end = clock();
-    duration[0] = duration[0] + t_end - t_start;
+    duration[0] += t_end - t_start;
 
-    path_cost.push_back(org_graph.distance2src[org_graph.sink_id_]);
-    org_graph.cur_path_max_cost = -org_graph.distance2src[org_graph.sink_id_];
+    path_cost.push_back(org_graph->distance2src[org_graph->sink_id_]);
+    org_graph->cur_path_max_cost = -org_graph->distance2src[org_graph->sink_id_];
     // 3rd step: update edge cost (make all weights positive)
     t_start = clock();
-    org_graph.update_allgraph_weights();
+    org_graph->update_allgraph_weights();
     t_end = clock();
-    duration[2] = duration[2] + t_end - t_start;
+    duration[2] += t_end - t_start;
 
     // 2nd step: extract shortest path
     t_start = clock();
-    org_graph.extract_shortest_path();
+    org_graph->extract_shortest_path();
     t_end = clock();
-    duration[7] = duration[7] + t_end - t_start;
+    duration[7] += t_end - t_start;
 
-    path_set.push_back(org_graph.shortest_path);
+    path_set.push_back(org_graph->shortest_path);
     path_num++;
 
     std::vector<unsigned long> update_node_num;
@@ -129,35 +129,35 @@ int main(int argc, char* argv[])
     std::vector<int> node_id4updating;
     // 5st step: rebuild org_graph
     t_start = clock();
-    org_graph.flip_path();//also erase the top sinker
+    org_graph->flip_path();//also erase the top sinker
     t_end = clock();
-    duration[9] = duration[9] + t_end - t_start;
+    duration[9] += t_end - t_start;
     while (true) {
         // 6th step: update shortest path tree of the sub-graph
         t_start = clock();
-        org_graph.update_shortest_path_tree_recursive(node_id4updating);
-        //printf("%d  %ld %ld %ld \n", path_num, org_graph.upt_node_num, org_graph.max_heap_size, org_graph.num_heap_operation);
-        printf("Iteration #%d, updated node number  %ld \n", path_num, org_graph.upt_node_num);
+        org_graph->update_shortest_path_tree_recursive(node_id4updating);
+        //printf("%d  %ld %ld %ld \n", path_num, org_graph->upt_node_num, org_graph->max_heap_size, org_graph->num_heap_operation);
+        printf("Iteration #%d, updated node number  %ld \n", path_num, org_graph->upt_node_num);
         t_end = clock();
-        duration[5] = duration[5] + t_end - t_start;
+        duration[5] += t_end - t_start;
 
         update_node_num.push_back(node_id4updating.size());
         // 8th: extract shortest path
         t_start = clock();
-        org_graph.extract_shortest_path();
+        org_graph->extract_shortest_path();
         t_end = clock();
-        duration[7] = duration[7] + t_end - t_start;
+        duration[7] += t_end - t_start;
 
         // test if stop
-        double cur_path_cost = path_cost[path_num - 1] + org_graph.distance2src[org_graph.sink_id_];
+        double cur_path_cost = path_cost[path_num - 1] + org_graph->distance2src[org_graph->sink_id_];
 
         if (cur_path_cost > -0.0000001) {
             break;
         }
 
         path_cost.push_back(cur_path_cost);
-        org_graph.cur_path_max_cost = -cur_path_cost;
-        path_set.push_back(org_graph.shortest_path);
+        org_graph->cur_path_max_cost = -cur_path_cost;
+        path_set.push_back(org_graph->shortest_path);
         path_num++;
 
         //            if (path_num == 12){
@@ -165,15 +165,15 @@ int main(int argc, char* argv[])
         //            }
         // 9th: update weights
         t_start = clock();
-        org_graph.update_subgraph_weights(node_id4updating);
+        org_graph->update_subgraph_weights(node_id4updating);
         t_end = clock();
-        duration[8] = duration[8] + t_end - t_start;
+        duration[8] += t_end - t_start;
 
         // 10th step: rebuild the graph
         t_start = clock();
-        org_graph.flip_path();
+        org_graph->flip_path();
         t_end = clock();
-        duration[9] = duration[9] + t_end - t_start;
+        duration[9] += t_end - t_start;
     }
 
     std::cout << "Parsing time is: " << parsing_time / CLOCKS_PER_SEC << std::endl;
