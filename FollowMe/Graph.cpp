@@ -189,7 +189,10 @@ void Graph::extract_shortest_path() {
     }
     shortest_path.push_back(src_id_);
 }
-
+/******
+ * flip the shortest path and update related nodes' precuror and successors
+ *
+ * *******/
 void Graph::flip_path() { // erase the best one link to sink
     /** for 2 and end-1, specially handled ***/
     // node path(2)

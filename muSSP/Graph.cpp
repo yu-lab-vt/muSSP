@@ -116,16 +116,16 @@ void Graph::invalid_edge_rm(){
  * https://www.geeksforgeeks.org/topological-sorting/
  */
 void Graph::topologicalSortUtil(int v, bool visited[], stack<int> &Stack) {
-    //// Mark the current node as visited
+    // Mark the current node as visited
     visited[v] = true;
 
-    //// Recur for all the vertices adjacent to this vertex
+    // Recur for all the vertices adjacent to this vertex
     for (auto node_id : V_[v].successor_idx)//(int i = 0; i < this->V_[v].successor_idx.size(); ++i)
     {
         if (!visited[node_id])
             topologicalSortUtil(node_id, visited, Stack);
     }
-    //// Push current vertex to stack which stores topological sort
+    // Push current vertex to stack which stores topological sort
     Stack.push(v);
 }
 
@@ -140,7 +140,7 @@ void Graph::topologicalSortUtil(int v, bool visited[], stack<int> &Stack) {
 *************************/
 void Graph::shortest_path_dag() {
     stack<int> Stack;
-    //// Mark all the vertices as not visited
+    // Mark all the vertices as not visited
     bool *visited = new bool[num_nodes_];
     memset(&visited[0], false, num_nodes_ * sizeof(bool));
 
@@ -149,7 +149,7 @@ void Graph::shortest_path_dag() {
         if (!visited[i])
             topologicalSortUtil(i, visited, Stack);
 
-    //// Initialize distances to all vertices as infinite and distance to source as 0
+    // Initialize distances to all vertices as infinite and distance to source as 0
     for (int i = 1; i<num_nodes_; i+=2)
         distance2src[i] = V_[i].precursor_edges_weights[0];
     for (int i = 2; i<num_nodes_; i+=2)
@@ -158,12 +158,12 @@ void Graph::shortest_path_dag() {
     distance2src[src_id_] = 0;
     ancestor_node_id[src_id_] = 0;
     parent_node_id[src_id_] = 0;
-    //// Process vertices in topological order
+    // Process vertices in topological order
     int i, cur_succ_id;
     double cur_distance;
     Stack.pop(); // pop up the source, because every node has been set as en_weight_
     while (!Stack.empty()) {
-        //// Get the next vertex from topological order
+        // Get the next vertex from topological order
         int cur_node_id = Stack.top();
         Stack.pop();
 
@@ -173,7 +173,7 @@ void Graph::shortest_path_dag() {
         if (cur_node_id != sink_id_)
             ancestors_descendants[ancestor_node_id[cur_node_id]].push_back(cur_node_id);
 
-        //// Update distances of all adjacent vertices
+        // Update distances of all adjacent vertices
         for (i = 0; i < V_[cur_node_id].successor_idx.size(); ++i) {
             cur_succ_id = V_[cur_node_id].successor_idx[i];
             cur_distance =
@@ -192,10 +192,8 @@ void Graph::shortest_path_dag() {
 
 }
 
-/********
- * update edge weights of all graph
- * can only be used when set precursors == succesors
-********/
+// update edge weights of all graph
+// can only be used when set precursors == succesors
 void Graph::update_allgraph_weights() {
 
     //// here we can get all precursors for sink node
@@ -273,7 +271,7 @@ void Graph::extract_shortest_path() {
  * *******/
 void Graph::flip_path() { // erase the best one link to sink
     /** for 2 and end-1, specially handled ***/
-        //// node path(2)
+        // node path(2)
         int node_tmp = shortest_path[shortest_path.size() - 2];// the path currently is from sink to src
         vector<int>::iterator edge_id_it;
         vector<double>::iterator edge_weight_it;

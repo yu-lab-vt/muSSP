@@ -43,9 +43,10 @@ public:
         Sink *sink_info;
         double precursor_queue_top_val;
         // for data validation
-        long upt_node_num, max_heap_size, num_heap_operation;
+        long max_heap_size, num_heap_operation;
         vector<pair<int, int>> edge_tail_head;
         vector<double> edge_org_weights;
+        long upt_node_num;
         //
         vector<bool> node_visited, edge_visited;
         vector<int> node_in_visited;

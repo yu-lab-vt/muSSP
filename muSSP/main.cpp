@@ -116,7 +116,6 @@ int main(int argc, char *argv[]) {
     vector<double> path_cost;
     vector<vector<int>> path_set;
     int path_num = 0;
-
     t_start = clock();
     //// 2: initialize shortest path tree from the DAG
     org_graph.shortest_path_dag();
@@ -177,7 +176,7 @@ int main(int argc, char *argv[]) {
         t_end = clock();
         duration[7] = duration[7] + t_end - t_start;
 
-        //// test if stop
+        // test if stop
         double cur_path_cost = path_cost[path_num - 1] + org_graph.distance2src[org_graph.sink_id_];
 
         if (cur_path_cost > -0.0000001) {

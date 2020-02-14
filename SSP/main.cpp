@@ -99,8 +99,6 @@ int main(int argc, char* argv[]) {
     path_set.push_back(org_graph.shortest_path);
     path_num++;
 
-
-
     vector<unsigned long> update_node_num;
 
     // 4th step: find nodes for updating
@@ -144,7 +142,6 @@ int main(int argc, char* argv[]) {
         // 9th: update weights
         t_start = clock();
         org_graph.update_subgraph_weights(node_id4updating);
-
         t_end = clock();
         duration[8] = duration[8] + t_end - t_start;
 

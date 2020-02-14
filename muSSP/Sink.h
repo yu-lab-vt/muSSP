@@ -1,4 +1,3 @@
-
 #include <vector>
 #include "Node.h"
 #include <algorithm>       /* fabs */
