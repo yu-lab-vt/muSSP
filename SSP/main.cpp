@@ -6,61 +6,85 @@
 #include <numeric>
 #include <algorithm>
 
-using namespace std;
-inline size_t node_key(int i,int j) {return (size_t) i << 32 | (unsigned int) j;}
+///
+/// \brief node_key
+/// \param i
+/// \param j
+/// \return
+///
+inline size_t node_key(int i,int j)
+{
+    return (size_t) i << 32 | (unsigned int) j;
+}
 
-Graph init(string filename){
-    int n, m; //no of nodes, no of arcs;
+///
+/// \brief init
+/// \param filename
+/// \return
+///
+Graph init(std::string filename)
+{
+    int n = 0, m = 0; //no of nodes, no of arcs;
     char pr_type[3]; //problem type;
-    int tail, head;
-    double weight;
-    double en_weight, ex_weight;
 
-    vector<int> edge_tails, edge_heads;
-    vector<double> edge_weights;
+    std::vector<int> edge_tails, edge_heads;
+    std::vector<double> edge_weights;
 
-    ifstream file(filename);
+    std::ifstream file(filename);
 
-    string line_inf;
+    std::string line_inf;
     getline(file, line_inf);
-    //cout << line <<endl;
+    //cout << line << std::endl;
     sscanf(line_inf.c_str(), "%*c %3s %d %d", pr_type, &n, &m);
 
+    double en_weight = 0;
+    double ex_weight = 0;
     //getline(file, line_inf);
-    //cout << line <<endl;
+    //cout << line << std::endl;
     //sscanf(line_inf.c_str(), "%*c %4s %lf %lf", pr_type, &en_weight, &ex_weight);
 
     auto *resG = new Graph(n, m, 0, n-1, en_weight, ex_weight);
     int edges = 0;
     int edge_id = 0;
-    for(string line; getline(file, line); )
+    for(std::string line; getline(file, line); )
     {
         switch(line[0]){
-            case 'c':                  /* skip lines with comments */
-            case '\n':                 /* skip empty lines   */
-            case 'n':
-            case '\0':                 /* skip empty lines at the end of file */
-                break;
-            case 'p':
-            case 'a': {
-                sscanf(line.c_str(), "%*c %d %d %lf", &tail, &head, &weight);
-                edges++;
+        case 'c':                  /* skip lines with comments */
+        case '\n':                 /* skip empty lines   */
+        case 'n':
+        case '\0':                 /* skip empty lines at the end of file */
+            break;
+        case 'p':
+        case 'a':
+        {
+            int tail = 0;
+            int head = 0;
+            double weight = 0;
+            sscanf(line.c_str(), "%*c %d %d %lf", &tail, &head, &weight);
+            edges++;
 
-                resG->add_edge(tail-1, head-1, edge_id, weight);
-                edge_id++;
-                if (edges % 10000 == 0)
-                    cout << edges <<endl;
-                break;
-            }
-            default:
-                break;
+            resG->add_edge(tail-1, head-1, edge_id, weight);
+            edge_id++;
+            if (edges % 10000 == 0)
+                std::cout << edges << std::endl;
+            break;
+        }
+        default:
+            break;
         }
     }
 
     return *resG;
 }
 
-int main(int argc, char* argv[]) {
+///
+/// \brief main
+/// \param argc
+/// \param argv
+/// \return
+///
+int main(int argc, char* argv[])
+{
     clock_t t_start;
     clock_t t_end;
     t_start = clock();
@@ -72,12 +96,12 @@ int main(int argc, char* argv[]) {
     auto *duration = new long double [10];
     for (int i=0; i<10; i++)
         duration[i] = 0;
-//    t_start = clock();
-    vector<double> path_cost;
-    vector<vector<int>> path_set;
+    //    t_start = clock();
+    std::vector<double> path_cost;
+    std::vector<std::vector<int>> path_set;
     int path_num = 0;
     t_start = clock();
-//     1st step: initialize shortest path tree from the DAG
+    //     1st step: initialize shortest path tree from the DAG
     org_graph.shortest_path_dag();
     t_end = clock();
     duration[0] = duration[0] + t_end - t_start;
@@ -99,10 +123,10 @@ int main(int argc, char* argv[]) {
     path_set.push_back(org_graph.shortest_path);
     path_num++;
 
-    vector<unsigned long> update_node_num;
+    std::vector<unsigned long> update_node_num;
 
     // 4th step: find nodes for updating
-    vector<int> node_id4updating;
+    std::vector<int> node_id4updating;
     // 5st step: rebuild org_graph
     t_start = clock();
     org_graph.flip_path();//also erase the top sinker
@@ -136,9 +160,9 @@ int main(int argc, char* argv[]) {
         path_set.push_back(org_graph.shortest_path);
         path_num++;
 
-//            if (path_num == 12){
-//                cout << "check point" <<endl;
-//            }
+        //            if (path_num == 12){
+        //                cout << "check point" << std::endl;
+        //            }
         // 9th: update weights
         t_start = clock();
         org_graph.update_subgraph_weights(node_id4updating);
@@ -152,7 +176,7 @@ int main(int argc, char* argv[]) {
         duration[9] = duration[9] + t_end - t_start;
     }
 
-    cout << "Parsing time is: " << parsing_time / CLOCKS_PER_SEC << endl;
+    std::cout << "Parsing time is: " << parsing_time / CLOCKS_PER_SEC << std::endl;
     double cost_sum = 0, cost_sum_recalculate = 0;
     for (auto&& i : path_cost){
         cost_sum += i;
@@ -164,7 +188,7 @@ int main(int argc, char* argv[]) {
     }
     printf("The number of paths: %ld, total cost is %.7f, final path cost is: %.7f.\n",
            path_cost.size() , cost_sum, path_cost[path_cost.size()-1]);
-    cout<< "The total number of updating node: " << total_upt_node_num <<endl;
+    std::cout << "The total number of updating node: " << total_upt_node_num << std::endl;
 
     long double all_cpu_time = 0;
     for (int i=0; i<10; i++) {
@@ -172,9 +196,8 @@ int main(int argc, char* argv[]) {
         all_cpu_time +=  time_elapsed_ms;
         //cout << "the "<<i+1<<" step used: " << time_elapsed_ms / 1000.0 << " s\n";
     }
-//    all_cpu_time = 1000.0 * (t_end-t_start) / CLOCKS_PER_SEC;
-    cout << "The overall time is "<< all_cpu_time / 1000.0 << " s\n program ending start writing!\n";
-
+    //    all_cpu_time = 1000.0 * (t_end-t_start) / CLOCKS_PER_SEC;
+    std::cout << "The overall time is "<< all_cpu_time / 1000.0 << " s\n program ending start writing!\n";
 
     return 0;
 }

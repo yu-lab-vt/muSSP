@@ -6,38 +6,48 @@
 #include <numeric>
 #include <algorithm>
 
-using namespace std;
+///
+/// \brief node_key
+/// \param i
+/// \param j
+/// \return
+///
+inline size_t node_key(int i, int j)
+{
+    return (size_t) i << 32 | (unsigned int) j;
+}
 
-inline size_t node_key(int i, int j) { return (size_t) i << 32 | (unsigned int) j; }
-/*****
- * data parsing
- * *****/
-Graph init(string filename) {
-    int n, m; ////no of nodes, no of arcs;
+///
+/// \brief init
+/// \param filename
+/// \return
+///
+Graph init(std::string filename)
+{
     char pr_type[3]; ////problem type;
-    int tail, head;
-    double weight;
-    double en_weight, ex_weight;
 
-    vector<int> edge_tails, edge_heads;
-    vector<double> edge_weights;
+    std::vector<int> edge_tails, edge_heads;
+    std::vector<double> edge_weights;
 
-    ifstream file(filename);
+    std::ifstream file(filename);
 
-    string line_inf;
+    int n = 0, m = 0; ////no of nodes, no of arcs;
+    std::string line_inf;
     getline(file, line_inf);
-    //cout << line <<endl;
+    //cout << line << std::endl;
     sscanf(line_inf.c_str(), "%*c %3s %d %d", pr_type, &n, &m);
 
+    double en_weight = 0;
+    double ex_weight = 0;
     //getline(file, line_inf);
-    //cout << line <<endl;
+    //cout << line << std::endl;
     //sscanf(line_inf.c_str(), "%*c %4s %lf %lf", pr_type, &en_weight, &ex_weight);
 
     auto *resG = new Graph(n, m, 0, n - 1, en_weight, ex_weight);
     int edges = 0;
     int edge_id = 0;
-    cout << "Parsing edges: " <<endl;
-    for (string line; getline(file, line);) {
+    std::cout << "Parsing edges: " << std::endl;
+    for (std::string line; getline(file, line);) {
         switch (line[0]) {
             case 'c':                  /* skip lines with comments */
             case '\n':                 /* skip empty lines   */
@@ -45,42 +55,48 @@ Graph init(string filename) {
             case '\0':                 /* skip empty lines at the end of file */
                 break;
             case 'p':
-            case 'a': {
+            case 'a':
+        {
+            int tail = 0;
+            int head = 0;
+            double weight = 0;
                 sscanf(line.c_str(), "%*c %d %d %lf", &tail, &head, &weight);
                 edges++;
 
                 resG->add_edge(tail - 1, head - 1, edge_id, weight);
                 edge_id++;
                 if (edges % 10000 == 0)
-                    cout << edges << endl;
+                    std::cout << edges << std::endl;
                 break;
             }
             default:
                 break;
         }
     }
-    cout <<"Parsing done!"<<endl;
+    std::cout <<"Parsing done!"<< std::endl;
     return *resG;
 }
 
-/*******
- * output the min-cost flow results
- * *****/
-void print_solution(Graph resG, vector<vector<int>> path_set, const char *outfile_name) {
-    int i, j;
-    int tail, head;
-    bool *edge_visited_flag = new bool[resG.num_edges_];
-    for (i = 0; i < path_set.size(); i++) {
-        for (j = 0; j < path_set[i].size() - 1; j++) {
-            tail = path_set[i][j];
-            head = path_set[i][j + 1];
+///
+/// \brief print_solution
+///        output the min-cost flow results
+/// \param resG
+/// \param path_set
+/// \param outfile_name
+///
+void print_solution(Graph resG, std::vector<std::vector<int>> path_set, const char *outfile_name)
+{
+    std::vector<bool> edge_visited_flag(resG.num_edges_);
+    for (size_t i = 0; i < path_set.size(); i++) {
+        for (size_t j = 0; j < path_set[i].size() - 1; j++) {
+            int tail = path_set[i][j];
+            int head = path_set[i][j + 1];
             int edge_idx = resG.node_id2edge_id[node_key(tail, head)];
             edge_visited_flag[edge_idx] = !edge_visited_flag[edge_idx];
         }
     }
-    FILE *fp;
-    fp = fopen(outfile_name, "w");
-    for (i = 0; i < resG.num_edges_; i++) {
+    FILE *fp = fopen(outfile_name, "w");
+    for (int i = 0; i < resG.num_edges_; i++) {
         if (edge_visited_flag[i])
             fprintf(fp, "f %d %d 1\n", resG.edge_tail_head[i].first + 1, resG.edge_tail_head[i].second + 1);
         else
@@ -89,7 +105,14 @@ void print_solution(Graph resG, vector<vector<int>> path_set, const char *outfil
     fclose(fp);
 }
 
-int main(int argc, char *argv[]) {
+///
+/// \brief main
+/// \param argc
+/// \param argv
+/// \return
+///
+int main(int argc, char *argv[])
+{
     clock_t t_start;
     clock_t t_end;
 
@@ -113,8 +136,8 @@ int main(int argc, char *argv[]) {
     duration[0] = t_end - t_start;
 
     ////save path and path cost
-    vector<double> path_cost;
-    vector<vector<int>> path_set;
+    std::vector<double> path_cost;
+    std::vector<std::vector<int>> path_set;
     int path_num = 0;
     t_start = clock();
     //// 2: initialize shortest path tree from the DAG
@@ -140,10 +163,10 @@ int main(int argc, char *argv[]) {
     path_set.push_back(org_graph.shortest_path);
     path_num++;
 
-    vector<unsigned long> update_node_num;
+    std::vector<unsigned long> update_node_num;
 
     //// 4: find nodes for updating based on branch node
-    vector<int> node_id4updating;
+    std::vector<int> node_id4updating;
     t_start = clock();
     org_graph.find_node_set4update(node_id4updating);
     t_end = clock();
@@ -207,15 +230,15 @@ int main(int argc, char *argv[]) {
     }
 
     //// out put results and time consuming
-    cout << "Parsing time is: " << parsing_time / CLOCKS_PER_SEC << " s" << endl;
+    std::cout << "Parsing time is: " << parsing_time / CLOCKS_PER_SEC << " s" << std::endl;
 
     long double all_cpu_time = 0;
     for (int i = 0; i < 10; i++) {
         auto time_elapsed_ms = 1000.0 * duration[i] / CLOCKS_PER_SEC;
         all_cpu_time += time_elapsed_ms;
-        cout << "the " << i + 1 << " step used: " << time_elapsed_ms / 1000.0 << " s\n";
+        std::cout << "the " << i + 1 << " step used: " << time_elapsed_ms / 1000.0 << " s\n";
     }
-    cout << "The overall time is " << all_cpu_time / 1000.0 << " s\n\n";
+    std::cout << "The overall time is " << all_cpu_time / 1000.0 << " s\n\n";
 
     //// start validation
     if (false) {
@@ -225,9 +248,8 @@ int main(int argc, char *argv[]) {
         }
         for (auto &&tmpPath:path_set) {
             double tmp_path_cost = 0;
-            int tmp_edge_id;
-            for (int j = 0; j < tmpPath.size() - 1; j++) {
-                tmp_edge_id = org_graph.node_id2edge_id[node_key(tmpPath[j + 1], tmpPath[j])];
+            for (size_t j = 0; j < tmpPath.size() - 1; j++) {
+                int tmp_edge_id = org_graph.node_id2edge_id[node_key(tmpPath[j + 1], tmpPath[j])];
                 tmp_path_cost += org_graph.edge_org_weights[tmp_edge_id];
                 org_graph.edge_org_weights[tmp_edge_id] *= -1;
             }
