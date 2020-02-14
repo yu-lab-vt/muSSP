@@ -104,10 +104,9 @@ int main(int argc, char *argv[])
 {
     //// reading data
     clock_t t_start = clock();
-    //Graph org_graph = init("input.txt");
-    //Graph org_graph = init(
-    //        "input_MOT_seq07_followme_k2.txt");
-    std::unique_ptr<Graph> org_graph = std::unique_ptr<Graph>(init(argv[2]));
+
+    std::string inFileName = (argc > 1) ? argv[1] : "input_MOT_seq07_followme.txt";
+    std::unique_ptr<Graph> org_graph = std::unique_ptr<Graph>(init(inFileName));
     clock_t t_end = clock();
     long double parsing_time = t_end - t_start;
 
@@ -252,14 +251,6 @@ int main(int argc, char *argv[])
     }
     printf("The number of paths: %ld, total cost is %.7f, final path cost is: %.7f.\n",
            path_cost.size(), cost_sum, path_cost[path_cost.size() - 1]);
-    //// output the number nodes updated in each iteration
-//    FILE *fp;
-//    fp = fopen("upt_size.txt", "w");
-//    for (auto&& i:update_node_num){
-//        fprintf (fp, "%ld\n", i);
-//    }
-//    fclose(fp);
-
 
     /*********write detailed flow to txt********/
     if (argc > 3) {

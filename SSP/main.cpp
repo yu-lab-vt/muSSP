@@ -75,12 +75,12 @@ Graph* init(std::string filename)
 ///
 int main(int argc, char* argv[])
 {
-    clock_t t_start;
-    clock_t t_end;
-    t_start = clock();
-    char* in_file =  argv[2];
-    std::unique_ptr<Graph> org_graph = std::unique_ptr<Graph>(init(in_file));
-    t_end = clock();
+    std::string inFileName = (argc > 1) ? argv[1] : "input_MOT_seq07_followme.txt";
+
+    clock_t t_start = clock();
+    std::unique_ptr<Graph> org_graph = std::unique_ptr<Graph>(init(inFileName));
+    clock_t t_end = clock();
+
     long double parsing_time = t_end - t_start;
     // //100002, 199988, 399970, 599926, 799868, 999806
     std::array<long double, 10> duration;

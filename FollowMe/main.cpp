@@ -74,27 +74,21 @@ Graph* init(std::string filename)
 ///
 int main(int argc, char* argv[])
 {
-//
-//    for (int i = 0; i < argc; ++i)
-//        cout << argv[i] << "\n";
-    char* in_file =  argv[2];
-//    cout << "test: " << in_file << std::endl;
-    clock_t t_start;
-    clock_t t_end;
-    t_start = clock();
-    std::unique_ptr<Graph> org_graph = std::unique_ptr<Graph>(init(in_file));
-    t_end = clock();
+    std::string inFileName = (argc > 1) ? argv[1] : "input_MOT_seq07_followme.txt";
+
+    clock_t t_start = clock();
+    std::unique_ptr<Graph> org_graph = std::unique_ptr<Graph>(init(inFileName));
+    clock_t t_end = clock();
+
     long double parsing_time = t_end - t_start;
     // //100002, 199988, 399970, 599926, 799868, 999806
     std::array<long double, 10> duration;
     duration.fill(0);
 
-//    t_start = clock();
     std::vector<double> path_cost;
-//    std::vector<std::vector<int>> path_set;
     int path_num = 0;
     t_start = clock();
-//     1st step: initialize shortest path tree from the DAG
+    //     1st step: initialize shortest path tree from the DAG
     org_graph->shortest_path_dag();
     t_end = clock();
     duration[0] += t_end - t_start;
