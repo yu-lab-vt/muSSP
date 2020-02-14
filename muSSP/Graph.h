@@ -12,11 +12,6 @@
 #include <cstring>
 #include <fstream>
 #include <memory>
-//#include <list>
-
-#define INF INT_MAX
-//#define FINF 1000000.0 //numeric_limits<double>::max()
-//#define FINFHALF FINF/2.0
 
 ///
 /// \brief The Graph class
@@ -71,8 +66,6 @@ public:
         ~Graph();
 
         Node &get_node(int pos);
-
-        class prioritize{public: bool operator ()(std::pair<int, double>&p1 , std::pair<int, double>&p2){return p1.second>p2.second;}};
 
         void add_edge(int tail_id, int head_id, int edge_id, double weight);
 

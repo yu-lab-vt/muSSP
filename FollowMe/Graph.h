@@ -10,12 +10,10 @@
 #include <algorithm>    // std::find
 #include <cstring>
 #include <fstream>
-//#include <list>
 
-#define INF INT_MAX
-//#define FINF 1000000.0 //numeric_limits<double>::max()
-//#define FINFHALF FINF/2.0
-
+///
+/// \brief The Graph class
+///
 class Graph
 {
 public:
@@ -56,8 +54,6 @@ public:
         Graph(int num_nodes, int num_edges, int src_id, int sink_id, double en_weight, double ex_weight);
         Node &get_node(int pos);
         ~Graph();
-
-        class prioritize{public: bool operator ()(std::pair<int, double>&p1 , std::pair<int, double>&p2){return p1.second>p2.second;}};
 
         void add_edge(int tail_id, int head_id, int edge_id, double weight);
 

@@ -504,7 +504,8 @@ void Graph::update_shortest_path_tree_recursive(std::vector<int> &update_node_id
  * we use a heap to save edges related to sink
  * thus we can decrease the updating to at most n1*log(n)
  * *****/
-void Graph::update_sink_info(std::vector<int> update_node_id) {
+void Graph::update_sink_info(std::vector<int> update_node_id)
+{
     std::multimap<double, int>::iterator it;
     double cur_dist;
     for (auto &&i : update_node_id) {////Set updated node as not visited
@@ -536,15 +537,14 @@ void Graph::update_sink_info(std::vector<int> update_node_id) {
     parent_node_id[sink_id_] = min4t_node_id;
     ancestor_node_id[sink_id_] = ancestor_node_id[min4t_node_id];
     distance2src[sink_id_] = min4t_dist;
-
 }
 
 /******
  * we do not need to update edge weight until we need to use them
  * but we need to update the distance labels and shift of sink heap
  * *****/
-void Graph::update_subgraph_weights(std::vector<int> &update_node_id) {
-
+void Graph::update_subgraph_weights(std::vector<int> &update_node_id)
+{
     //// majority of sink's precursors does not change, but they should, we save the change in shift
     sink_info->sink_weight_shift -= distance2src[sink_id_];
 
@@ -553,7 +553,6 @@ void Graph::update_subgraph_weights(std::vector<int> &update_node_id) {
         distance2src[i] = 0;
     }
 }
-
 
 Graph::~Graph() {
 }
