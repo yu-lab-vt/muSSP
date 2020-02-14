@@ -7,17 +7,6 @@
 #include <algorithm>
 
 ///
-/// \brief node_key
-/// \param i
-/// \param j
-/// \return
-///
-inline size_t node_key(int i, int j)
-{
-    return (size_t) i << 32 | (unsigned int) j;
-}
-
-///
 /// \brief init
 /// \param filename
 /// \return
@@ -73,7 +62,7 @@ Graph* init(std::string filename)
                 break;
         }
     }
-    std::cout <<"Parsing done!"<< std::endl;
+    std::cout << "Parsing done!" << std::endl;
     return resG;
 }
 
@@ -91,7 +80,7 @@ void print_solution(Graph* resG, std::vector<std::vector<int>> path_set, const c
         for (size_t j = 0; j < path_set[i].size() - 1; j++) {
             int tail = path_set[i][j];
             int head = path_set[i][j + 1];
-            int edge_idx = resG->node_id2edge_id[node_key(tail, head)];
+            int edge_idx = resG->node_id2edge_id[Graph::node_key(tail, head)];
             edge_visited_flag[edge_idx] = !edge_visited_flag[edge_idx];
         }
     }
@@ -113,17 +102,13 @@ void print_solution(Graph* resG, std::vector<std::vector<int>> path_set, const c
 ///
 int main(int argc, char *argv[])
 {
-    clock_t t_start;
-    clock_t t_end;
-
     //// reading data
-    t_start = clock();
+    clock_t t_start = clock();
     //Graph org_graph = init("input.txt");
     //Graph org_graph = init(
     //        "input_MOT_seq07_followme_k2.txt");
-    char* in_file =  argv[2];
-    std::unique_ptr<Graph> org_graph = std::unique_ptr<Graph>(init(in_file));
-    t_end = clock();
+    std::unique_ptr<Graph> org_graph = std::unique_ptr<Graph>(init(argv[2]));
+    clock_t t_end = clock();
     long double parsing_time = t_end - t_start;
 
     std::array<long double, 10> duration;
@@ -248,7 +233,7 @@ int main(int argc, char *argv[])
         for (auto &&tmpPath:path_set) {
             double tmp_path_cost = 0;
             for (size_t j = 0; j < tmpPath.size() - 1; j++) {
-                int tmp_edge_id = org_graph->node_id2edge_id[node_key(tmpPath[j + 1], tmpPath[j])];
+                int tmp_edge_id = org_graph->node_id2edge_id[Graph::node_key(tmpPath[j + 1], tmpPath[j])];
                 tmp_path_cost += org_graph->edge_org_weights[tmp_edge_id];
                 org_graph->edge_org_weights[tmp_edge_id] *= -1;
             }

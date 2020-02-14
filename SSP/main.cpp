@@ -8,17 +8,6 @@
 #include <memory>
 
 ///
-/// \brief node_key
-/// \param i
-/// \param j
-/// \return
-///
-inline size_t node_key(int i,int j)
-{
-    return (size_t) i << 32 | (unsigned int) j;
-}
-
-///
 /// \brief init
 /// \param filename
 /// \return
@@ -194,10 +183,10 @@ int main(int argc, char* argv[])
     for (int i=0; i<10; i++) {
         auto time_elapsed_ms = 1000.0 * duration[i] / CLOCKS_PER_SEC;
         all_cpu_time +=  time_elapsed_ms;
-        //cout << "the "<<i+1<<" step used: " << time_elapsed_ms / 1000.0 << " s\n";
+        //cout << "the " <<i+1<< " step used: " << time_elapsed_ms / 1000.0 << " s\n";
     }
     //    all_cpu_time = 1000.0 * (t_end-t_start) / CLOCKS_PER_SEC;
-    std::cout << "The overall time is "<< all_cpu_time / 1000.0 << " s\n program ending start writing!\n";
+    std::cout << "The overall time is " << all_cpu_time / 1000.0 << " s\n program ending start writing!\n";
 
     return 0;
 }

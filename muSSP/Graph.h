@@ -24,24 +24,29 @@
 class Graph
 {
 public:
-        int num_nodes_;
-        int num_edges_;
-        int src_id_, sink_id_;
-        double en_weight_, ex_weight_;
+        int num_nodes_ = 0;
+        int num_edges_ = 0;
+        int src_id_ = 0;
+        int sink_id_ = 0;
+        double en_weight_ = 0;
+        double ex_weight_ = 0;
 
         std::vector<long double> time_test;
 
         std::vector<Node> V_; // save all nodes in the graph (precursor/successor/edge idx)
         std::vector<double> edge_weights;
-        inline size_t node_key(int i,int j) {return (size_t) i << 32 | (unsigned int) j;}
+        static inline size_t node_key(int i,int j)
+        {
+            return (size_t) i << 32 | (unsigned int) j;
+        }
         std::unordered_map<size_t, int> node_id2edge_id;
         std::vector<int> shortest_path;
         std::unique_ptr<Sink> sink_info;
-        double precursor_queue_top_val;
+        double precursor_queue_top_val = 0;
         // for data validation
         std::vector<std::pair<int, int>> edge_tail_head;
         std::vector<double> edge_org_weights;
-        long upt_node_num;
+        long upt_node_num = 0;
         //
         std::vector<bool> node_visited, edge_visited;
         std::vector<int> node_in_visited;
@@ -52,16 +57,20 @@ public:
         std::vector<std::vector<int>> ancestors_descendants; // for each ancestor, its following nodes
         std::multimap<double, int> node_upt_waitinglist;
         std::stack<int> edge_upt_waitinglist;
-        double node_upt_shift, cur_upt_shift;
+        double node_upt_shift = 0;
+        double cur_upt_shift = 0;
         std::vector<double> nodewise_upt_shift;
         std::queue<int> tplog_queue, tmp_queue;
         std::vector<int> tplog_vec;
 
-        double cur_path_max_cost, cur_remain_max_distance;
+        double cur_path_max_cost = 0;
+        double cur_remain_max_distance = 0;
+
         Graph() = default;
         Graph(int num_nodes, int num_edges, int src_id, int sink_id, double en_weight, double ex_weight);
-        Node &get_node(int pos);
         ~Graph();
+
+        Node &get_node(int pos);
 
         class prioritize{public: bool operator ()(std::pair<int, double>&p1 , std::pair<int, double>&p2){return p1.second>p2.second;}};
 
