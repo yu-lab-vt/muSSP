@@ -5,6 +5,9 @@
 #include <ctime>
 #include <numeric>
 #include <algorithm>
+#include <iostream>
+#include <string>
+#include <array>
 
 ///
 /// \brief init
@@ -22,7 +25,7 @@ Graph* init(std::string filename)
 
     int n = 0, m = 0; ////no of nodes, no of arcs;
     std::string line_inf;
-    getline(file, line_inf);
+    std::getline(file, line_inf);
     //cout << line << std::endl;
     sscanf(line_inf.c_str(), "%*c %3s %d %d", pr_type, &n, &m);
 

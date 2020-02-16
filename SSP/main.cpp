@@ -6,6 +6,9 @@
 #include <numeric>
 #include <algorithm>
 #include <memory>
+#include <iostream>
+#include <string>
+#include <array>
 
 ///
 /// \brief init
