@@ -1,9 +1,6 @@
 # Welcome to muSSP
 muSSP (**M**inimum-**u**pdate **S**uccessive **S**hortest **P**ath) is an exact and efficient min-cost flow (MCF) solver for the global data association problem in multi-object tracking (MOT). MCF has been widely used for solving data-association problem in MOT, while existing solvers for MCF problem in MOT are either directly adoption or slight modifications of generic MCF algorithms, yielding sub-optimal efficiency. Based on successive shortest path (SSP) algorithm, muSSP identifies several specialties of the MCF problem in MOT and saves dramatic computation by leveraging these specialties. Practically, muSSP got **hundreds to thousands efficiency improvement** compared with peer methods tested on five MOT benchmarks. muSSP enjoys the same worst-case complexity and space efficiency as SSP. The improved computational efficiency is expected to enable more sophisticated tracking framework and yields better tracking accuracy.
 
-More details can be found in our [NeurIPS paper](http://papers.nips.cc/paper/8334-mussp-efficient-min-cost-flow-algorithm-for-multi-object-tracking) and [poster](https://drive.google.com/file/d/1sVkRwuPQNmRLfbMt45-ylnA4YeqKjOLD/view).
-
-Inspired by the min-cost flow based data-association framework, we developped a new data-association framework based on min-cost circulation called [CINDA](https://github.com/yu-lab-vt/CINDA), which maintains the same optimal solution as the min-cost flow framework. A theoretically and practically adavanced implementation of CINDA is also provided.
 - [Overview of the MCF problem in MOT](#overview-of-the-MCF-problem-in-MOT)
   - [What is MCF doing in MOT?](#What-is-MCF-doing-in-MOT?)
   - [Specialties of the network](#Specialties-of-the-network)
@@ -27,7 +24,9 @@ Inspired by the min-cost flow based data-association framework, we developped a 
 Lines between detections are possible ways of linking them. Each line is associated with a cost.
 Detections 1, 3 and 6 should be linked together as a single trajectory. (b) Typical min-cost flow model for MOT problem. Detection i is represented by a pair of nodes: a pre-node o_i and a post-node h_i (e.g. see detection 2). The source node **s** is linked to all pre-nodes and all post-nodes are linked to the sink node **t**. These edges are shown in dashed lines. Edges between detections are shown in blue.
 </p>
+More details can be found in our [NeurIPS paper](http://papers.nips.cc/paper/8334-mussp-efficient-min-cost-flow-algorithm-for-multi-object-tracking) and [poster](https://drive.google.com/file/d/1sVkRwuPQNmRLfbMt45-ylnA4YeqKjOLD/view).
 
+Inspired by the min-cost flow based data-association framework, we developped a new data-association framework based on min-cost circulation called [CINDA](https://github.com/yu-lab-vt/CINDA), which maintains the same optimal solution as the min-cost flow framework. A theoretically and practically adavanced implementation of CINDA is also provided.
 ### What is MCF doing in MOT?
 * Select a set of s-t paths with minimal total cost.
 * Each path is a trajectory.
