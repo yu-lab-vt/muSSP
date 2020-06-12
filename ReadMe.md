@@ -14,7 +14,7 @@ Inspired by the min-cost flow based data-association framework, we developped a 
   - [muSSP is averagely hundreds to thousands times faster than peer methods](#muSSP-is-averagely-hundreds-to-thousands-times-faster-than-peer-methods)
   - [Consistent performance is achieved when applying muSSP to higher-order model](#Consistent-performance-is-achieved-when-applying-muSSP-to-higher-order-model)
 - [How to use muSSP](#How-to-use-muSSP)
-  - [To run the codes with provided sample graph](#To-run-the-codes-with-provided-sample-graph:)
+  - [To run the codes with provided sample graph](#To-run-the-codes-with-provided-sample-graph)
   - [To rebuild for you own graph](#To-rebuild-for-you-own-graph)
 - [Citation](#citation)
 - [References](#references)
@@ -71,7 +71,7 @@ cs2[1] is a famous push-relabel based MCF solver used in [3] and [4], where bina
 
 ## How to use muSSP
 
-### To run the codes with provided sample graph:
+### To run the codes with provided sample graph
 ```
 (1). cd to the file location (e.g. 'you path to/SrcCode/muSSP/')
 (2). open terminal under current location
