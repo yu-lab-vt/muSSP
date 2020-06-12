@@ -61,7 +61,7 @@ cs2[1] is a famous push-relabel based MCF solver used in [3] and [4], where bina
 ```
 (1). cd to the file location (e.g. 'you path to/SrcCode/muSSP/')
 (2). open terminal under current location
-(3). run the command in terminal: './muSSP -i ../input_MOT_seq07_followme.txt'
+(3). run the command in terminal: './muSSP ../input_MOT_seq07_followme.txt'
 ```
 The same way can be used to run dSSP algorithm in FollowMe and SSP algorithm
 
@@ -73,7 +73,7 @@ The same way can be used to run dSSP algorithm in FollowMe and SSP algorithm
 (4) add other arcs indicating the cost of linking two objects into one trajectory
 ```
 
-The packages are tested on Ubunut 16.04, the code is compiled by g++ with c++11 support.
+The packages are tested on Ubunut 16.04, the code is compiled by g++ with c++14 support.
 The sample graph format follows DIMACS CNF format, but does not list arc capacity constraint, which is always [0,1].
 
 ## Citation
