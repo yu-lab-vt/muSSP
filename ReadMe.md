@@ -9,11 +9,11 @@ Inspired by the min-cost flow based data-association framework, we developped a 
   - [Specialties of the network](#Specialties-of-the-network)
   - [Successive shortest path (SSP) algorithm](#Successive-shortest-path-(SSP)-algorithm)
   - [Minimum-update Successive Shortest Path (muSSP) algorithm](#Minimum-update-Successive-Shortest-Path-(muSSP)-algorithm)
-- [Why muSSP is faster?](#Why-muSSP-is-faster?)
+- [Why is muSSP faster?](#Why-is-muSSP-faster?)
 - [Experiments](#Experiments)
   - [muSSP is averagely hundreds to thousands times faster than peer methods](#muSSP-is-averagely-hundreds-to-thousands-times-faster-than-peer-methods)
   - [Consistent performance is achieved when applying muSSP to higher-order model](#Consistent-performance-is-achieved-when-applying-muSSP-to-higher-order-model)
-- [How to use muSSP](#How-to-use-muSSP)
+- [How to use muSSP?](#How-to-use-muSSP?)
   - [To run the codes with provided sample graph](#To-run-the-codes-with-provided-sample-graph)
   - [To rebuild for you own graph](#To-rebuild-for-you-own-graph)
 - [Citation](#citation)
@@ -44,7 +44,7 @@ Sequentially instantiate the shortest s-t path on the residual graph and augment
 ### Minimum-update Successive Shortest Path (muSSP) algorithm
 Dynamically maintain a shortest path tree of the residual graph while avoid computation that unrelated to finding the shortest s-t path.
 
-## Why muSSP is faster?
+## Why is muSSP faster?
 1. Increase the reusability of the shortest path tree
 2. Reduce the update frequency of the shortest path tree
 3. Accelerate the updating of the shortest path tree
@@ -69,7 +69,7 @@ cs2[1] is a famous push-relabel based MCF solver used in [3] and [4], where bina
   <img height="50" src="img/quadratic_efficiency.png">
 </p>
 
-## How to use muSSP
+## How to use muSSP?
 
 ### To run the codes with provided sample graph
 ```
