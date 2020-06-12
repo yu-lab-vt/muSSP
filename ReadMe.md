@@ -4,7 +4,21 @@ muSSP (**M**inimum-**u**pdate **S**uccessive **S**hortest **P**ath) is an exact 
 More details can be found in our [NeurIPS paper](http://papers.nips.cc/paper/8334-mussp-efficient-min-cost-flow-algorithm-for-multi-object-tracking) and [poster](https://drive.google.com/file/d/1sVkRwuPQNmRLfbMt45-ylnA4YeqKjOLD/view).
 
 Inspired by the min-cost flow based data-association framework, we developped a new data-association framework based on min-cost circulation called [CINDA](https://github.com/yu-lab-vt/CINDA), which maintains the same optimal solution as the min-cost flow framework. A theoretically and practically adavanced implementation of CINDA is also provided.
-
+- [Overview of the MCF problem in MOT](#overview-of-the-MCF-problem-in-MOT)
+  - [What is MCF doing in MOT?](#What-is-MCF-doing-in-MOT?)
+  - [Specialties of the network](#Specialties-of-the-network)
+  - [Successive shortest path (SSP) algorithm](#Successive-shortest-path-(SSP)-algorithm)
+  - [Minimum-update Successive Shortest Path (muSSP) algorithm](#Minimum-update-Successive-Shortest-Path-(muSSP)-algorithm)
+- [Why muSSP is faster?](#Why-muSSP-is-faster?)
+- [Experiments](#Experiments)
+  - [muSSP is averagely hundreds to thousands times faster than peer methods](#muSSP-is-averagely-hundreds-to-thousands-times-faster-than-peer-methods)
+  - [Consistent performance is achieved when applying muSSP to higher-order model](#Consistent-performance-is-achieved-when-applying-muSSP-to-higher-order-model)
+- [How to use muSSP](#How-to-use-muSSP)
+  - [To run the codes with provided sample graph](#To-run-the-codes-with-provided-sample-graph:)
+  - [To rebuild for you own graph](#To-rebuild-for-you-own-graph)
+- [Citation](#citation)
+- [References](#references)
+- [Updates](#updates)
 ## Overview of the MCF problem in MOT
 <p align="center">
   <img height="200" src="img/mcf_framework.png">
@@ -73,7 +87,7 @@ The same way can be used to run dSSP algorithm in FollowMe and SSP algorithm
 (4) add other arcs indicating the cost of linking two objects into one trajectory
 ```
 
-The packages are tested on Ubunut 16.04, the code is compiled by g++ with c++14 support.
+The packages are tested on Ubunut 16.04, the code is compiled by g++ and gcc v9.3.0.
 The sample graph format follows DIMACS CNF format, but does not list arc capacity constraint, which is always [0,1].
 
 ## Citation
@@ -101,3 +115,14 @@ greedy algorithms for tracking a variable number of objects,” in 2008 IEEE Con
 tracking using k-shortest paths optimization,” IEEE transactions
 on pattern analysis and machine intelligence, vol. 33, no. 9, pp. 1806–
 1819, 2011.
+
+## Updates
+### 06/12/2020:
+
+1) Integrate the code refinement from Nuzhny007, fixing the memory leaks.
+2) Chane the command for running muSSP (Remove "-i").
+3) Fix the bug caused by 'abs' function under C++14 standard.
+4) Update the codes with c++14 standard and test it with g++/gcc v9.3.0.
+
+
+
