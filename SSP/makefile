@@ -1,5 +1,5 @@
 # change these to suit your system
-CCOMP = g++ -std=c++11
+CCOMP = g++ -std=c++14
 #CCOMP = gcc-4
 #CFLAGS = -O4 -DNDEBUG
 #CFLAGS = -g -DCHECK_SOLUTION -Wall
