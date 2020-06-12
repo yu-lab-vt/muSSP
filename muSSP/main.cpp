@@ -54,7 +54,8 @@ Graph* init(std::string filename)
             double weight = 0;
                 sscanf(line.c_str(), "%*c %d %d %lf", &tail, &head, &weight);
                 edges++;
-
+                if (tail>n || head>n)
+                    std::cout<<"ERROR: more nodes than expected!"<<std::endl;
                 resG->add_edge(tail - 1, head - 1, edge_id, weight);
                 edge_id++;
                 if (edges % 10000 == 0)
@@ -108,7 +109,7 @@ int main(int argc, char *argv[])
     //// reading data
     clock_t t_start = clock();
 
-    std::string inFileName = (argc > 1) ? argv[1] : "input_MOT_seq07_followme.txt";
+    std::string inFileName = (argc > 1) ? argv[1] : "/home/congchao/Desktop/dev/muSSP/input_117982_193870.txt";
     std::unique_ptr<Graph> org_graph = std::unique_ptr<Graph>(init(inFileName));
     clock_t t_end = clock();
     long double parsing_time = t_end - t_start;

@@ -3,6 +3,7 @@
 /****shared macros****/
 #define MAX(x, y) ( ( (x) > (y) ) ?  x : y )
 #define MIN(x, y) ( ( (x) < (y) ) ? x : y )
+#define abs(x) ( ( (x) < 0 ) ? -x : x )
 #define REDUCED_EDGE_WEIGHTS(i, j, e) {\
     edge_weights[e] += distance2src[i];\
     edge_weights[e] -= distance2src[j];\
