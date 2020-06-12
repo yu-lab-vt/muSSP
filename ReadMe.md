@@ -120,7 +120,7 @@ on pattern analysis and machine intelligence, vol. 33, no. 9, pp. 1806–
 ### 06/12/2020:
 
 1) Integrate the code refinement from Nuzhny007, fixing the memory leaks.
-2) Chane the command for running muSSP (Remove "-i").
+2) Change the command for running muSSP/dSSP/SSP (Remove "-i").
 3) Fix the bug caused by 'abs' function under C++14 standard.
 4) Update the codes with c++14 standard and test it with g++/gcc v9.3.0.
 
