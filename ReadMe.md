@@ -61,7 +61,7 @@ cs2[1] is a famous push-relabel based MCF solver used in [3] and [4], where bina
 ```
 (1). cd to the file location (e.g. 'you path to/SrcCode/muSSP/')
 (2). open terminal under current location
-(3). run the command in terminal: './muSSP ../input_MOT_seq07_followme.txt'
+(3). run the command in terminal: './muSSP -i ../input_MOT_seq07_followme.txt'
 ```
 The same way can be used to run dSSP algorithm in FollowMe and SSP algorithm
 
