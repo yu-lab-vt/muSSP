@@ -25,7 +25,7 @@ Lines between detections are possible ways of linking them. Each line is associa
 Detections 1, 3 and 6 should be linked together as a single trajectory. (b) Typical min-cost flow model for MOT problem. Detection i is represented by a pair of nodes: a pre-node o_i and a post-node h_i (e.g. see detection 2). The source node **s** is linked to all pre-nodes and all post-nodes are linked to the sink node **t**. These edges are shown in dashed lines. Edges between detections are shown in blue.
 </p>
 
-More details can be found in our [NeurIPS paper](http://papers.nips.cc/paper/8334-mussp-efficient-min-cost-flow-algorithm-for-multi-object-tracking) and [poster](https://drive.google.com/file/d/1sVkRwuPQNmRLfbMt45-ylnA4YeqKjOLD/view).
+More details can be found in our [NeurIPS paper](https://drive.google.com/file/d/1BUkWpkX-QagNY5vxP0H_QuyIIFbfMtfK/view?usp=sharing) and [poster](https://drive.google.com/file/d/1sVkRwuPQNmRLfbMt45-ylnA4YeqKjOLD/view).
 
 Inspired by the min-cost flow based data-association framework, we developped a new data-association framework based on min-cost circulation called [CINDA](https://github.com/yu-lab-vt/CINDA), which maintains the same optimal solution as the min-cost flow framework. A theoretically and practically adavanced implementation of CINDA is also provided.
 
@@ -50,7 +50,7 @@ Dynamically maintain a shortest path tree of the residual graph while avoid comp
 2. Reduce the update frequency of the shortest path tree
 3. Accelerate the updating of the shortest path tree
 
-Four strategies (the four modules with different colors in the following flowchart) were proposed in muSSP to fulfill these three tasks. None of the strategies violate the optimality of the final solution. Details of the strategies and their proofs can be found in our [paper](http://papers.nips.cc/paper/8334-mussp-efficient-min-cost-flow-algorithm-for-multi-object-tracking).
+Four strategies (the four modules with different colors in the following flowchart) were proposed in muSSP to fulfill these three tasks. None of the strategies violate the optimality of the final solution. Details of the strategies and their proofs can be found in our [paper](https://drive.google.com/file/d/1BUkWpkX-QagNY5vxP0H_QuyIIFbfMtfK/view?usp=sharing).
 <p align="center">
   <img height="400" src="img/flowchart.png">
 </p>
