@@ -118,6 +118,9 @@ on pattern analysis and machine intelligence, vol. 33, no. 9, pp. 1806–
 1819, 2011.
 
 ## Updates
+### 01/13/2021:
+Apache-2.0 License was added.
+
 ### 06/12/2020:
 
 1) Integrate the code refinement from Nuzhny007, fixing the memory leaks.
