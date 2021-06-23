@@ -1,7 +1,7 @@
 # Welcome to muSSP
 muSSP (**M**inimum-**u**pdate **S**uccessive **S**hortest **P**ath) is an exact and efficient min-cost flow (MCF) solver for the global data association problem in multi-object tracking (MOT). MCF has been widely used for solving data-association problem in MOT, while existing solvers for MCF problem in MOT are either directly adoption or slight modifications of generic MCF algorithms, yielding sub-optimal efficiency. Based on successive shortest path (SSP) algorithm, muSSP identifies several specialties of the MCF problem in MOT and saves dramatic computation by leveraging these specialties. Practically, muSSP got **hundreds to thousands efficiency improvement** compared with peer methods tested on five MOT benchmarks. muSSP enjoys the same worst-case complexity and space efficiency as SSP. The improved computational efficiency is expected to enable more sophisticated tracking framework and yields better tracking accuracy. 
 
-If you have any feedback or issue, you are welcome to either post issue in Issues section or send email to yug@vt.edu (Guoqiang Yu).
+If you have any feedback or issue, you are welcome to either post issue in Issues section or send email to yug@vt.edu (Guoqiang Yu at Virginia Tech).
 
 - [Overview of the MCF problem in MOT](#overview-of-the-MCF-problem-in-MOT)
   - [What is MCF doing in MOT?](#What-is-MCF-doing-in-MOT?)
